@@ -1,5 +1,6 @@
 #include <SdFat.h>
 #include <Audio.h>
+#include <Arduino.h>
 
 SdFat sd;
 SdFile file;
@@ -9,7 +10,7 @@ void setup() {
   Serial.begin(9600);
   delay(200);
   if (!sd.begin(SD_CHIP_SELECT, SPI_EIGHTH_SPEED)) sd.initErrorHalt();
-  if (file.open("PRINT00.TXT", O_READ)) {
+  /*if (file.open("PRINT00.TXT", O_READ)) {
     Serial.println("Opened PRINT00.TXT");
   }
   int16_t n;
@@ -21,9 +22,9 @@ void setup() {
     Serial.println("error closing file");
   }
   Serial.println("dajee");
-  
+  */
 
-  
+
   Audio.begin(88200, 100);
 }
 
@@ -64,5 +65,3 @@ void loop() {
   Serial.println("End of file. Thank you for listening!");
   while (true) ;
 }
-
-
