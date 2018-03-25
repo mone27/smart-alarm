@@ -1,2 +1,2 @@
 # smart-alarm
-is an arduino project fro creating an next gen alarm
+An arduino powered alarm, which allow you to choose the music to play and much more
