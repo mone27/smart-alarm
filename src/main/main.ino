@@ -86,7 +86,7 @@ void update_time()
     disp.setFont(SevenSegNumFont);
     disp.printNumI(t.min, WD/2+10, HG/2-50, 2, '0');
     Serial << "min :" << t.min << endl << "alarm min : "
-    << time_alarm.min << "h : " << time_alarm.hour ;
+    << time_alarm.min << "h : " << time_alarm.hour  << endl;
     
     sec = t.sec;
     //check for alarm
@@ -95,8 +95,16 @@ void update_time()
       Serial << "play alarm !!!!";
       
     }
+    // update temperature
+    Serial << "temp: " << rtc.getTemp() << endl;
+    disp.setFont(BigFont);
+    disp.printNumF(rtc.getTemp(),1 ,3 , 2 ,'.', 2);
+    
+    
+      
       if(t.min == 00) //every hour
         {
+          disp.setFont(SevenSegNumFont);
           disp.printNumI(t.hour, WD/2-78, HG/2-50, 2, ' ');
         }
     }
@@ -146,14 +154,43 @@ void loop() {
     Serial << "stopped alarm";
  
   }
-  Serial << "play_alarm state : " << play_alarm << endl ;
-  delay(10000);
+  if( Serial.available() > 0){
+    SerialFlush();
+    Serial << "setting up alarm... " << " insert hour of alarm and any non numerical charater at end" << endl;
+    wait_for_input();
+    time_alarm.hour = Serial.parseInt();
+    SerialFlush();
+    Serial << "inserted value : " << time_alarm.hour << endl; 
+
+    
+    Serial << " insert time of alarm and any non numerical charater at end" << endl;// copy and paste !!!!!! :(
+    wait_for_input();
+    time_alarm.min = Serial.parseInt();
+    Serial << "inserted value : " << time_alarm.hour << endl;
+
+    Serial << "alarm set up for : " << time_alarm.hour <<":" << time_alarm.min << endl;
+
+      SerialFlush();
+      
+  }
+  delay(1000);
+}
+void wait_for_input(){
+  uint8_t count = 0;
+  while(Serial.available() == 0){
+    if(count == 30){
+      Serial << '.';
+      count = 0;
+      }
+      count ++;
+      delay(100);
+    }
+   
 }
 
 
 
-
-//old code cutted from setup
+//old code cut from setup
 
 /*
     ifstream settings("set");
